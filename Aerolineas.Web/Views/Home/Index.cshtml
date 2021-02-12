@@ -1,0 +1,169 @@
+﻿@{
+    ViewBag.Title = "José Quispe";
+}
+
+<div class="jumbotron">
+    <h1>Prueba José Quispe</h1>
+</div>
+
+<div class="row">
+    <div class="col-md-9">
+        <h2>Itinerario</h2>
+    </div>
+    <div class="col-md-3">
+        <button type='button' data-toggle='modal' data-target='#exampleModal' data-id="0" data-nombre="">Agregar Avión</button>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="table-responsive">
+            <table class="table">
+                <thead class="encabezado-tabla">
+                    <tr>
+                        <th>Avión</th>
+                        <th>Ciudad</th>
+                        <th>Horas</th>
+                        <th>Editar Avión</th>
+                        <th>Eliminar Avión</th>
+                    </tr>
+                </thead>
+                <tbody class="cuerpo-tabla" id="data-itinerario">
+                    @*Render Datos de Lista Usuario*@
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Editar</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="recipient-nombre" class="col-form-label">Nombre:</label>
+                    <input type="text" class="form-control" id="recipient-nombre">
+                    <input type="hidden" id="recipient-id">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="GuardarCambios()";>Guardar Cambios</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModalEliminar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Eliminar Avión</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="col-form-label">Esta seguro de eliminar este registro ?</label>
+                    <input type="hidden" id="recipient-id-eliminar">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="EliminarAvion();">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            ObtenerItinerario();
+        });
+
+        function ObtenerItinerario() {
+            $.ajax({
+                url: '@Url.Action("ItinerarioObtener", "Home")',
+                dataType: 'json',
+                cache: false,
+                success: function (data) {
+                    $("#data-itinerario").empty();
+                    for (var contador = 0; contador < data.length; contador++) {
+                        tr = $('<tr/>');
+                        tr.append("<td>" + data[contador].Nomre + "</td>");
+                        tr.append("<td>" + data[contador].Nombre + "</td>");
+                        tr.append("<td>" + data[contador].HorasVuelo + "</td>");
+                        
+                        tr.append("<td> <button type='button' data-toggle='modal' data-target='#exampleModal' data-id=" + data[contador].IdAvion + " data-nombre=" + data[contador].Nomre + " />Editar</td>");
+                        tr.append("<td> <button type='button' data-toggle='modal' data-target='#exampleModalEliminar' data-id=" + data[contador].IdAvion + " />Eliminar</td>");
+                        $('table').append(tr);
+                    }
+                }
+            });
+        }
+
+        $('#exampleModal').on('show.bs.modal', function (event) {
+            var ctrl = $(event.relatedTarget);
+            var id = ctrl.data('id');
+            var nombre = ctrl.data('nombre');
+
+            var modal = $(this);
+            modal.find('#recipient-id').val(id);
+            modal.find('#recipient-nombre').val(nombre);
+        })
+
+        $('#exampleModalEliminar').on('show.bs.modal', function (event) {
+            var ctrl = $(event.relatedTarget);
+            var id = ctrl.data('id');
+            var modal = $(this);
+            modal.find('#recipient-id-eliminar').val(id);
+        })
+
+        function GuardarCambios() {
+            var id = $('#recipient-id').val();
+            var nombre = $('#recipient-nombre').val();
+
+            var avion = {
+                Id: id,
+                Nomre: nombre
+            };
+
+            $.ajax({
+                url: '@Url.Action("AvionCrear", "Home")',
+                dataType: 'json',
+                data: avion,
+                cache: false,
+                success: function (data) {
+                    ObtenerItinerario();
+                }
+            });
+        }
+
+        function EliminarAvion(id) {
+            var id = $('#recipient-id-eliminar').val();
+
+            var avion = {
+                Id: id
+            };
+
+            $.ajax({
+                url: '@Url.Action("AvionEliminar", "Home")',
+                dataType: 'json',
+                data: avion,
+                cache: false,
+                success: function (data) {
+                    ObtenerItinerario();
+                }
+            });
+        }
+
+    </script>
+}

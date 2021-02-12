@@ -1,0 +1,213 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="AerolineasModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Avion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nomre" Type="varchar" MaxLength="256" />
+        </EntityType>
+        <EntityType Name="Ciudad">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="256" />
+        </EntityType>
+        <EntityType Name="Itinerario">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IdAvion" Type="int" />
+          <Property Name="IdCiudad" Type="int" />
+          <Property Name="HorasVuelo" Type="decimal" Precision="6" Scale="2" />
+        </EntityType>
+        <Association Name="FK_Itinerario_Avion">
+          <End Role="Avion" Type="Self.Avion" Multiplicity="0..1" />
+          <End Role="Itinerario" Type="Self.Itinerario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Avion">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Itinerario">
+              <PropertyRef Name="IdAvion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Itinerario_Ciudad">
+          <End Role="Ciudad" Type="Self.Ciudad" Multiplicity="0..1" />
+          <End Role="Itinerario" Type="Self.Itinerario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ciudad">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Itinerario">
+              <PropertyRef Name="IdCiudad" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="ObtenerItinerario" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <EntityContainer Name="AerolineasModelStoreContainer">
+          <EntitySet Name="Avion" EntityType="Self.Avion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ciudad" EntityType="Self.Ciudad" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Itinerario" EntityType="Self.Itinerario" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Itinerario_Avion" Association="Self.FK_Itinerario_Avion">
+            <End Role="Avion" EntitySet="Avion" />
+            <End Role="Itinerario" EntitySet="Itinerario" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Itinerario_Ciudad" Association="Self.FK_Itinerario_Ciudad">
+            <End Role="Ciudad" EntitySet="Ciudad" />
+            <End Role="Itinerario" EntitySet="Itinerario" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="AerolineasModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Avion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nomre" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Itinerario" Relationship="Self.FK_Itinerario_Avion" FromRole="Avion" ToRole="Itinerario" />
+        </EntityType>
+        <EntityType Name="Ciudad">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Itinerario" Relationship="Self.FK_Itinerario_Ciudad" FromRole="Ciudad" ToRole="Itinerario" />
+        </EntityType>
+        <EntityType Name="Itinerario">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IdAvion" Type="Int32" />
+          <Property Name="IdCiudad" Type="Int32" />
+          <Property Name="HorasVuelo" Type="Decimal" Precision="6" Scale="2" />
+          <NavigationProperty Name="Avion" Relationship="Self.FK_Itinerario_Avion" FromRole="Itinerario" ToRole="Avion" />
+          <NavigationProperty Name="Ciudad" Relationship="Self.FK_Itinerario_Ciudad" FromRole="Itinerario" ToRole="Ciudad" />
+        </EntityType>
+        <Association Name="FK_Itinerario_Avion">
+          <End Role="Avion" Type="Self.Avion" Multiplicity="0..1" />
+          <End Role="Itinerario" Type="Self.Itinerario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Avion">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Itinerario">
+              <PropertyRef Name="IdAvion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Itinerario_Ciudad">
+          <End Role="Ciudad" Type="Self.Ciudad" Multiplicity="0..1" />
+          <End Role="Itinerario" Type="Self.Itinerario" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ciudad">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Itinerario">
+              <PropertyRef Name="IdCiudad" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AerolineasEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Avion" EntityType="Self.Avion" />
+          <EntitySet Name="Ciudad" EntityType="Self.Ciudad" />
+          <EntitySet Name="Itinerario" EntityType="Self.Itinerario" />
+          <AssociationSet Name="FK_Itinerario_Avion" Association="Self.FK_Itinerario_Avion">
+            <End Role="Avion" EntitySet="Avion" />
+            <End Role="Itinerario" EntitySet="Itinerario" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Itinerario_Ciudad" Association="Self.FK_Itinerario_Ciudad">
+            <End Role="Ciudad" EntitySet="Ciudad" />
+            <End Role="Itinerario" EntitySet="Itinerario" />
+          </AssociationSet>
+          <FunctionImport Name="ObtenerItinerario" ReturnType="Collection(AerolineasModel.Itinerarios)" />
+        </EntityContainer>
+        <ComplexType Name="Itinerarios">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="Int32" Name="IdAvion" Nullable="true" />
+          <Property Type="String" Name="Nomre" Nullable="true" MaxLength="256" />
+          <Property Type="Int32" Name="IdCiudad" Nullable="true" />
+          <Property Type="String" Name="Nombre" Nullable="true" MaxLength="256" />
+          <Property Type="Decimal" Name="HorasVuelo" Nullable="true" Precision="6" Scale="2" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="AerolineasModelStoreContainer" CdmEntityContainer="AerolineasEntities">
+          <EntitySetMapping Name="Avion">
+            <EntityTypeMapping TypeName="AerolineasModel.Avion">
+              <MappingFragment StoreEntitySet="Avion">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nomre" ColumnName="Nomre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ciudad">
+            <EntityTypeMapping TypeName="AerolineasModel.Ciudad">
+              <MappingFragment StoreEntitySet="Ciudad">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Itinerario">
+            <EntityTypeMapping TypeName="AerolineasModel.Itinerario">
+              <MappingFragment StoreEntitySet="Itinerario">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdAvion" ColumnName="IdAvion" />
+                <ScalarProperty Name="IdCiudad" ColumnName="IdCiudad" />
+                <ScalarProperty Name="HorasVuelo" ColumnName="HorasVuelo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="ObtenerItinerario" FunctionName="AerolineasModel.Store.ObtenerItinerario">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="AerolineasModel.Itinerarios">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IdAvion" ColumnName="IdAvion" />
+                <ScalarProperty Name="Nomre" ColumnName="Nomre" />
+                <ScalarProperty Name="IdCiudad" ColumnName="IdCiudad" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="HorasVuelo" ColumnName="HorasVuelo" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
