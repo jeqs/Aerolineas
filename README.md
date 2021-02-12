@@ -11,7 +11,7 @@ Proyecto en Visual Studio 2019 Framework 4.8
 - Aerolineas.WebApi: Servicio Web REST API
 
 # Lenguajes
-C#, SQL, jquery, HTML
+C#, SQL, Javascript, HTML
 
 # Depedencias:
 Para instalar las dependencias con Nuget, ejecutar el siguiente comando en consola de nuget
