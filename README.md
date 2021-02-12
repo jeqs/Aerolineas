@@ -2,7 +2,7 @@
 
 Proyecto en Visual Studio 2019 Framework 4.8
 
-# Librerias:
+# Librerías
 - Aerolineas.DataStorage: Capa de Base de datos
 - Aerolineas.Infrastructure: Capa de Infraestrucutra
 - Aerolineas.Services: Capa de servicio o lógica de negocio
@@ -30,4 +30,3 @@ Para que el sitio web se conecte al servicio web Rest Api, cambiar en el archivo
 En la sección appSettings cambiar la siguiente llave por la ruta local donde se vaya a ejecutar el servicio web.
 
 <add key="RutaUrlApi" value="http://localhost:2471/api"/>
-
