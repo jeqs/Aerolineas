@@ -30,3 +30,9 @@ Para que el sitio web se conecte al servicio web Rest Api, cambiar en el archivo
 En la sección appSettings cambiar la siguiente llave por la ruta local donde se vaya a ejecutar el servicio web.
 
 <add key="RutaUrlApi" value="http://localhost:2471/api"/>
+
+# Donate/Support
+If you like my work, feel free to support it. Donations to the project are always welcomed :)
+
+Buy Me A Coffee
+https://www.buymeacoffee.com/jeqs
